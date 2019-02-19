@@ -15,91 +15,98 @@
     <script src="../static/js/plotly-latest.min.js"></script>
     <style>
         body {
-        font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
-    }
+            font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
 
-    .main {
-        width: 100%;
-        position: absolute;
-        top: 0px;
-        bottom: 0;
-    }
+        .main {
+            width: 100%;
+            position: absolute;
+            top: 0px;
+            bottom: 0;
+        }
 
-    .fillHeight {
-        height: 100%;
-    }
+        .fillHeight {
+            height: 100%;
+        }
 
-    .fillWidth {
-        width: 100%;
-    }
+        .fillWidth {
+            width: 100%;
+        }
 
-    #highlight{
-        height: 50%;
-    }
-    #heatmap{
-        height: 50%;
-    }
+        #highlight {
+            height: 50%;
+        }
+
+        #heatmap {
+            height: 50%;
+        }
+
+        a.highlight {
+            color: #272822;
+            background-color: #ffce4b;
+        }
     </style>
 </head>
 
 <body>
-    <div class="main">
-        <div class="container-fluid text-center fillHeight">
-            <div class="row content fillHeight">
-                <div class="col-sm-4 fillHeight" id="panel">
-                    <div class="ui selection dropdown">
-                        <input type="hidden" name="head">
-                        <i class="dropdown icon"></i>
-                        <div class="default text">Select Head</div>
-                        <div class="menu">
-                            <div class="item" data-value="0">1</div>
-                            <div class="item" data-value="1">2</div>
-                            <div class="item" data-value="2">3</div>
-                            <div class="item" data-value="3">4</div>
-                            <div class="item" data-value="4">5</div>
-                            <div class="item" data-value="5">6</div>
-                            <div class="item" data-value="6">7</div>
-                            <div class="item" data-value="7">8</div>
-                        </div>
-                    </div>
-
-                    <div class="ui selection dropdown">
-                        <input type="hidden" name="head">
-                        <i class="dropdown icon"></i>
-                        <div class="default text">Select Layer</div>
-                        <div class="menu">
-                            <div class="item" data-value="0">1</div>
-                            <div class="item" data-value="1">2</div>
-                            <div class="item" data-value="2">3</div>
-                            <div class="item" data-value="3">4</div>
-                            <div class="item" data-value="4">5</div>
-                            <div class="item" data-value="5">6</div>
-                        </div>
-                    </div>
-
-                    <div class="ui selection dropdown">
-                        <input type="hidden" name="head">
-                        <i class="dropdown icon"></i>
-                        <div class="default text">Select Attention</div>
-                        <div class="menu">
-                            <div class="item" data-value="0">Input: self-attention</div>
-                            <div class="item" data-value="1">Network: cross-attention</div>
-                            <div class="item" data-value="2">Output: self-attention</div>
-                        </div>
+<div class="main">
+    <div class="container-fluid text-center fillHeight">
+        <div class="row content fillHeight">
+            <div class="col-sm-4 fillHeight" id="panel">
+                <div class="ui selection dropdown">
+                    <input type="hidden" name="head">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Select Head</div>
+                    <div class="menu">
+                        <div class="item" data-value="0">1</div>
+                        <div class="item" data-value="1">2</div>
+                        <div class="item" data-value="2">3</div>
+                        <div class="item" data-value="3">4</div>
+                        <div class="item" data-value="4">5</div>
+                        <div class="item" data-value="5">6</div>
+                        <div class="item" data-value="6">7</div>
+                        <div class="item" data-value="7">8</div>
                     </div>
                 </div>
-                <div class="col-sm-8 fillHeight" id="chart">
-                    <div class="fillWidth" id="highlight">
-                        Place holder for highlight charts.
+
+                <div class="ui selection dropdown">
+                    <input type="hidden" name="head">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Select Layer</div>
+                    <div class="menu">
+                        <div class="item" data-value="0">1</div>
+                        <div class="item" data-value="1">2</div>
+                        <div class="item" data-value="2">3</div>
+                        <div class="item" data-value="3">4</div>
+                        <div class="item" data-value="4">5</div>
+                        <div class="item" data-value="5">6</div>
                     </div>
-                    <div class="fillWidth" id="heatmap">
-                        <canvas id="heatmapCanvas" class="fillWidth fillHeight" style="display: none"></canvas>
-                        <div id="heatmapDiv" class="fillHeight fillWidth"></div>
+                </div>
+
+                <div class="ui selection dropdown">
+                    <input type="hidden" name="head">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Select Attention</div>
+                    <div class="menu">
+                        <div class="item" data-value="0">Input: self-attention</div>
+                        <div class="item" data-value="1">Network: cross-attention</div>
+                        <div class="item" data-value="2">Output: self-attention</div>
                     </div>
+                </div>
+            </div>
+            <div class="col-sm-8 fillHeight" id="chart" style="text-align: left">
+                <div class="fillWidth" id="highlight">
+                    <p id="highlightTextField">
+                    </p>
+                </div>
+                <div class="fillWidth" id="heatmap">
+                    <canvas id="heatmapCanvas" class="fillWidth fillHeight" style="display: none"></canvas>
+                    <div id="heatmapDiv" class="fillHeight fillWidth"></div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </body>
 
 </html>
