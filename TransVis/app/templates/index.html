@@ -45,6 +45,10 @@
             color: #272822;
             background-color: #ffce4b;
         }
+
+        .well {
+            margin-bottom: 0px;
+        }
     </style>
 </head>
 
@@ -52,7 +56,7 @@
 <div class="main">
     <div class="container-fluid text-center fillHeight">
         <div class="row content fillHeight">
-            <div class="col-sm-4 fillHeight" id="panel">
+            <div class="col-sm-4 well fillHeight" id="panel">
                 <div class="ui selection dropdown">
                     <input type="hidden" name="head">
                     <i class="dropdown icon"></i>
@@ -95,11 +99,11 @@
                 </div>
             </div>
             <div class="col-sm-8 fillHeight" id="chart" style="text-align: left">
-                <div class="fillWidth" id="highlight">
+                <div class="fillWidth well" id="highlight" style="overflow: scroll;">
                     <p id="highlightTextField">
                     </p>
                 </div>
-                <div class="fillWidth" id="heatmap">
+                <div class="fillWidth well" id="heatmap">
                     <canvas id="heatmapCanvas" class="fillWidth fillHeight" style="display: none"></canvas>
                     <div id="heatmapDiv" class="fillHeight fillWidth"></div>
                 </div>
