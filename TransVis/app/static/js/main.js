@@ -69,13 +69,16 @@ $(document).ready(function () {
 
             context.drawImage(imageObj, imageX, imageY);
 
+            var x_labels = input_text;
+            var y_labels = output_text;
             var data = [{
                 z: heatmapdata,
-                type: "heatmapgl",
+                x: input_text,
+                y: output_text,
+                type: "heatmap",
                 colorscale: "Portland"
             }];
-
-            Plotly.plot("heatmapDiv", data, {}, {showSendToCloud: true});
+            Plotly.newPlot("heatmapDiv", data, {}, {showSendToCloud: true});
         }
 
         var imageObj = new Image();
