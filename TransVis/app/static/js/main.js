@@ -120,4 +120,4 @@ function append_text() {
             $('#highlightTextField').append('<br> <br>');
         });
     });
-};
+}

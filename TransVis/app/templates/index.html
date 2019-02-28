@@ -13,6 +13,7 @@
     <script src="../static/js/d3.v3.js"></script>
     <script src="../static/js/main.js"></script>
     <script src="../static/js/plotly-latest.min.js"></script>
+
     <style>
         body {
             font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
@@ -57,7 +58,19 @@
     <div class="container-fluid text-center fillHeight">
         <div class="row content fillHeight">
             <div class="col-sm-4 well fillHeight" id="panel">
-                <div class="ui selection dropdown">
+                <div class="default text">Select Heads</div> <br>
+                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 1</label> </div>
+                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 2</label> </div>
+                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 3</label> </div>
+                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 4</label> </div>
+                <br>
+                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 5</label> </div>
+                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 6</label> </div>
+                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 7</label> </div>
+                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 8</label> </div>
+                <!--<div class="ui selection dropdown">
+                    <input type="checkbox" name="head">
+                    <i class="dropdown icon"></i>
                     <input type="hidden" name="head">
                     <i class="dropdown icon"></i>
                     <div class="default text">Select Head</div>
@@ -71,7 +84,7 @@
                         <div class="item" data-value="6">7</div>
                         <div class="item" data-value="7">8</div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="ui selection dropdown">
                     <input type="hidden" name="head">
@@ -99,7 +112,7 @@
                 </div>
             </div>
             <div class="col-sm-8 fillHeight" id="chart" style="text-align: left">
-                <div class="fillWidth well" id="highlight" style="overflow: scroll;">
+                <div class="fillWidth well" id="highlight" style="overflow: scroll">
                     <p id="highlightTextField">
                     </p>
                 </div>
