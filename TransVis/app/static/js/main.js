@@ -6,7 +6,7 @@ $(document).ready(function () {
         .dropdown();
     append_text();
 
-
+    var color_map = d3.scale.category10();
     function input_to_output(index) {
         // TODO
         return 1;
@@ -65,7 +65,13 @@ $(document).ready(function () {
                     for (i = 0; i < selected_head_list.length; i++) {
                         highlight_list = output_to_input(selected_layer, selected_head_list[i], parseInt(current_id.slice(6)));
                         for (j = 0; j < highlight_list.length; j++) {
-                            $('#input' + highlight_list[j].toString()).addClass('highlight');
+                            $('#input' + highlight_list[j].toString()).css(
+                                {
+                                    'color': '#272822',
+                                    'background-color': color_map(selected_head_list[i])
+                                    // 'opacity':
+                                }
+                            );
                         }
                     }
                 }
@@ -81,7 +87,13 @@ $(document).ready(function () {
                     for (i = 0; i < selected_head_list.length; i++) {
                         highlight_list = output_to_input(selected_layer, selected_head_list[i], parseInt(current_id.slice(6)));
                         for (j = 0; j < highlight_list.length; j++) {
-                            $('#input' + highlight_list[j].toString()).removeClass('highlight');
+                            $('#input' + highlight_list[j].toString()).css(
+                                {
+                                    'color': '',
+                                    'background-color': ''
+                                    // 'opacity': ''
+                                }
+                            );
                         }
                     }
                 }
@@ -101,7 +113,7 @@ $(document).ready(function () {
             var x_labels = input_text;
             var y_labels = output_text;
             var data = [{
-                z: heatmapdata,
+                z: heatmapdata[0][0],
                 x: input_text,
                 y: output_text,
                 type: "heatmap",
