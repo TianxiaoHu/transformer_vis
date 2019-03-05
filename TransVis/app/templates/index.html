@@ -58,35 +58,43 @@
     <div class="container-fluid text-center fillHeight">
         <div class="row content fillHeight">
             <div class="col-sm-4 well fillHeight" id="panel">
-                <div class="default text">Select Heads</div> <br>
-                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 1</label> </div>
-                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 2</label> </div>
-                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 3</label> </div>
-                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 4</label> </div>
+                <div class="default text">Select Heads</div>
                 <br>
-                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 5</label> </div>
-                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 6</label> </div>
-                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 7</label> </div>
-                <div class="checkbox-inline"> <label><input type="checkbox" value="">Head 8</label> </div>
-                <!--<div class="ui selection dropdown">
-                    <input type="checkbox" name="head">
-                    <i class="dropdown icon"></i>
-                    <input type="hidden" name="head">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Select Head</div>
-                    <div class="menu">
-                        <div class="item" data-value="0">1</div>
-                        <div class="item" data-value="1">2</div>
-                        <div class="item" data-value="2">3</div>
-                        <div class="item" data-value="3">4</div>
-                        <div class="item" data-value="4">5</div>
-                        <div class="item" data-value="5">6</div>
-                        <div class="item" data-value="6">7</div>
-                        <div class="item" data-value="7">8</div>
-                    </div>
-                </div> -->
 
-                <div class="ui selection dropdown">
+                <div class="ui checkbox headSelect">
+                    <input type="checkbox" tabindex="0" class="hidden" id="headSelect0">
+                    <label>Head 1</label>
+                </div>
+                <div class="ui checkbox headSelect">
+                    <input type="checkbox" tabindex="0" class="hidden" id="headSelect1">
+                    <label>Head 2</label>
+                </div>
+                <div class="ui checkbox headSelect">
+                    <input type="checkbox" tabindex="0" class="hidden" id="headSelect2">
+                    <label>Head 3</label>
+                </div>
+                <div class="ui checkbox headSelect">
+                    <input type="checkbox" tabindex="0" class="hidden" id="headSelect3">
+                    <label>Head 4</label>
+                </div>
+                <div class="ui checkbox headSelect">
+                    <input type="checkbox" tabindex="0" class="hidden" id="headSelect4">
+                    <label>Head 5</label>
+                </div>
+                <div class="ui checkbox headSelect">
+                    <input type="checkbox" tabindex="0" class="hidden" id="headSelect5">
+                    <label>Head 6</label>
+                </div>
+                <div class="ui checkbox headSelect">
+                    <input type="checkbox" tabindex="0" class="hidden" id="headSelect6">
+                    <label>Head 7</label>
+                </div>
+                <div class="ui checkbox headSelect">
+                    <input type="checkbox" tabindex="0" class="hidden" id="headSelect7">
+                    <label>Head 8</label>
+                </div>
+
+                <div class="ui selection dropdown" id="layerSelect">
                     <input type="hidden" name="head">
                     <i class="dropdown icon"></i>
                     <div class="default text">Select Layer</div>

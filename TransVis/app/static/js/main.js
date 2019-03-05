@@ -1,7 +1,11 @@
+var selected_layer;
+var selected_head_list = [];
+
 $(document).ready(function () {
     $('.ui.dropdown')
         .dropdown();
     append_text();
+
 
     function input_to_output(index) {
         // TODO
@@ -22,11 +26,31 @@ $(document).ready(function () {
         return outp;
     }
 
-    function output_to_input(index) {
-        var weight_list = heatmapdata[index];
-        max_5_weight = largest_n_index(weight_list, 10);
-        return max_5_weight;
+    function output_to_input(layer, head, index) {
+        var weight_list = heatmapdata[layer][head][index];
+        max_weights = largest_n_index(weight_list, 10);
+        return max_weights;
     }
+
+    $("#layerSelect").dropdown({
+        onChange: function () {
+            selected_layer = parseInt($("#layerSelect").dropdown('get value'));
+        }
+    });
+
+    $(".headSelect").checkbox({
+        onChecked: function () {
+            selected_head_list.push(parseInt($(this).attr('id').slice(10)));
+            console.log(selected_head_list);
+        },
+        onUnchecked: function () {
+            var index = selected_head_list.indexOf(parseInt($(this).attr('id').slice(10)));
+            if (index != -1) {
+                selected_head_list.splice(index, 1);
+            }
+            console.log(selected_head_list);
+        }
+    });
 
     $.get("../static/data/heatmap.json", function (heatmap_data) {
         $('a').hover(
@@ -36,11 +60,13 @@ $(document).ready(function () {
                     console.log("not implemented");
                 }
                 else {
-                    console.log("here");
-                    highlight_list = output_to_input(parseInt(current_id.slice(6)));
-                    console.log(highlight_list);
-                    for (i = 0; i < highlight_list.length; i++) {
-                        $('#input' + highlight_list[i].toString()).addClass('highlight');
+                    if (typeof(selected_layer) === 'undefined') return;
+                    if (selected_head_list.length === 0) return;
+                    for (i = 0; i < selected_head_list.length; i++) {
+                        highlight_list = output_to_input(selected_layer, selected_head_list[i], parseInt(current_id.slice(6)));
+                        for (j = 0; j < highlight_list.length; j++) {
+                            $('#input' + highlight_list[j].toString()).addClass('highlight');
+                        }
                     }
                 }
             },
@@ -50,12 +76,15 @@ $(document).ready(function () {
                     console.log("not implemented");
                 }
                 else {
-                    highlight_list = output_to_input(parseInt(current_id.slice(6)));
-                    for (i = 0; i < highlight_list.length; i++) {
-                        $('#input' + highlight_list[i].toString()).removeClass('highlight');
+                    if (typeof(selected_layer) === 'undefined') return;
+                    if (selected_head_list.length === 0) return;
+                    for (i = 0; i < selected_head_list.length; i++) {
+                        highlight_list = output_to_input(selected_layer, selected_head_list[i], parseInt(current_id.slice(6)));
+                        for (j = 0; j < highlight_list.length; j++) {
+                            $('#input' + highlight_list[j].toString()).removeClass('highlight');
+                        }
                     }
                 }
-                // $(this).removeClass('highlight')
             }
         );
 
