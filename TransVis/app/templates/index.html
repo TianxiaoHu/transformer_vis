@@ -35,17 +35,13 @@
         }
 
         #highlight {
-            height: 50%;
+            height: 60%;
         }
 
         #heatmap {
-            height: 50%;
+            height: 40%;
         }
 
-        /*a.highlight {*/
-        /*color: #272822;*/
-        /*background-color: #ffce4b;*/
-        /*}*/
         .headSelect {
             width: 20%;
         }
@@ -61,9 +57,39 @@
     <div class="container-fluid text-center fillHeight">
         <div class="row content fillHeight">
             <div class="col-sm-4 well fillHeight" id="panel">
-                <div class="default text">Select Heads</div>
-                <br>
 
+                <div class="ui selection dropdown">
+                    <input type="hidden" name="head">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Select Attention</div>
+                    <div class="menu">
+                        <div class="item" data-value="0">self-attention: input</div>
+                        <div class="item" data-value="1">cross-attention</div>
+                        <div class="item" data-value="2">self-attention: output</div>
+                    </div>
+                </div>
+                <br><br>
+
+                <div class="ui selection dropdown" id="layerSelect">
+                    <input type="hidden" name="head">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Select Layer</div>
+                    <div class="menu">
+                        <div class="item" data-value="0">1</div>
+                        <div class="item" data-value="1">2</div>
+                        <div class="item" data-value="2">3</div>
+                        <div class="item" data-value="3">4</div>
+                        <div class="item" data-value="4">5</div>
+                        <div class="item" data-value="5">6</div>
+                        <div class="item" data-value="5">7</div>
+                        <div class="item" data-value="5">8</div>
+                        <div class="item" data-value="5">9</div>
+                        <div class="item" data-value="5">10</div>
+                    </div>
+                </div>
+                <br><br>
+
+                <div class="default text"><strong>Select Heads</strong></div>
                 <div class="ui checkbox headSelect">
                     <input type="checkbox" tabindex="0" class="hidden" id="headSelect0">
                     <label id="headSelectLabel0">Head 1</label>
@@ -97,35 +123,13 @@
                     <label id="headSelectLabel7">Head 8</label>
                 </div>
 
-                <div class="ui selection dropdown" id="layerSelect">
-                    <input type="hidden" name="head">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Select Layer</div>
-                    <div class="menu">
-                        <div class="item" data-value="0">1</div>
-                        <div class="item" data-value="1">2</div>
-                        <div class="item" data-value="2">3</div>
-                        <div class="item" data-value="3">4</div>
-                        <div class="item" data-value="4">5</div>
-                        <div class="item" data-value="5">6</div>
-                    </div>
-                </div>
-
-                <div class="ui selection dropdown">
-                    <input type="hidden" name="head">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Select Attention</div>
-                    <div class="menu">
-                        <div class="item" data-value="0">Input: self-attention</div>
-                        <div class="item" data-value="1">Network: cross-attention</div>
-                        <div class="item" data-value="2">Output: self-attention</div>
-                    </div>
-                </div>
             </div>
             <div class="col-sm-8 fillHeight" id="chart" style="text-align: left">
-                <div class="fillWidth well" id="highlight" style="overflow: scroll">
-                    <p id="highlightTextField">
-                    </p>
+                <div class="fillWidth well" id="highlight">
+                    <div id="highlightTextFieldInput" style="height: 70%; overflow: scroll">
+                    </div>
+                    <div id="highlightTextFieldOutput" style="height: 30%; overflow: scroll">
+                    </div>
                 </div>
                 <div class="fillWidth well" id="heatmap">
                     <canvas id="heatmapCanvas" class="fillWidth fillHeight" style="display: none"></canvas>

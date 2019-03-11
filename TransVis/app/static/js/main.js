@@ -1,122 +1,130 @@
 var selected_layer;
 var selected_head_list = [];
+var input_text;
+var output_text;
+var cross_attn;
+var layer_num;
+var head_num;
+var input_length;
+var output_length;
+var opacity_scale;
 
 $(document).ready(function () {
+
+    // initialize dropdown list
     $('.ui.dropdown')
         .dropdown();
-    append_text();
 
+    // create color map for different heads
     var color_map = d3.scale.category10();
 
-    for (i = 0; i < 8; i++) {
-        $('#headSelectLabel' + i.toString()).css({
-            'color': color_map(i)
-        });
-    }
-
-    function input_to_output(index) {
-        // TODO
-        return 1;
-    };
-
-    function largest_n_index(arr, count) {
-        var outp = [];
-        for (var i = 0; i < arr.length; i++) {
-            outp.push(i); // add index to output array
-            if (outp.length > count) {
-                outp.sort(function (a, b) {
-                    return arr[b] - arr[a];
-                }); // descending sort the output array
-                outp.pop(); // remove the last index (index of smallest element in output array)
-            }
-        }
-        return outp;
-    }
-
-    function output_to_input(layer, head, index) {
-        var weight_list = heatmapdata[layer][head][index];
-        max_weights = largest_n_index(weight_list, 10);
-        return max_weights;
-    }
-
+    // bind dropdown list action
     $("#layerSelect").dropdown({
         onChange: function () {
             selected_layer = parseInt($("#layerSelect").dropdown('get value'));
+
+            var max_value = d3.max(cross_attn[selected_layer], function (heads_array) {
+                return d3.max(heads_array, function (array) {
+                    return d3.max(array);
+                })
+            });
+
+            // linear scaler for opacity
+            opacity_scale = d3.scale.linear()
+                .domain([0, max_value])
+                .range([0, 0.8]);
         }
     });
 
+    // bind checkbox action
     $(".headSelect").checkbox({
         onChecked: function () {
             selected_head_list.push(parseInt($(this).attr('id').slice(10)));
-            console.log(selected_head_list);
         },
         onUnchecked: function () {
             var index = selected_head_list.indexOf(parseInt($(this).attr('id').slice(10)));
             if (index != -1) {
                 selected_head_list.splice(index, 1);
             }
-            console.log(selected_head_list);
         }
     });
 
-    $.get("../static/data/heatmap.json", function (heatmap_data) {
-        $('a').hover(
+    $.get("../static/data/cross.json", function (data) {
+        // load data to global variable
+        input_text = data['article'];
+        output_text = data['summary'];
+        cross_attn = data['cross_attn'];
+
+        // save dimention to global variable
+        layer_num = cross_attn.length;
+        head_num = cross_attn[0].length;
+        output_length = cross_attn[0][0].length;
+        input_length = cross_attn[0][0][0].length;
+
+        // TODO: append layer and head dynamically according to `layer_num` and `head_num`
+
+        // append input and output data HTML
+        append_text(input_text, output_text);
+
+        // change text color for head select checkbox
+        for (i = 0; i < head_num; i++) {
+            $('#headSelectLabel' + i.toString()).css({
+                'color': color_map(i)
+            });
+        }
+
+        // bind hover action to output text
+        $('.outputText').hover(
             function () {
+                if (typeof(selected_layer) === 'undefined') return;
+                if (selected_head_list.length === 0) return;
+
+                // get current output id (0 ~ 100)
                 current_id = $(this).attr('id');
-                if (current_id.charAt(0) === 'i') {
-                    console.log("not implemented");
-                }
-                else {
-                    if (typeof(selected_layer) === 'undefined') return;
-                    if (selected_head_list.length === 0) return;
-                    var selected_id = parseInt(current_id.slice(6));
+                var selected_id = parseInt(current_id.slice(6));
 
-                    for (i = 0; i < selected_head_list.length; i++) {
-                        var opacity_scale = d3.scale.linear()
-                            .domain([0, d3.max(heatmap_data[selected_layer][selected_head_list[i]][selected_id])])
-                            .range([0.3, 1]);
+                // loop over each head and add floating div
+                for (i = 0; i < selected_head_list.length; i++) {
+                    var highlight_color = $('#headSelectLabel' + selected_head_list[i].toString()).css('color');
 
-                        highlight_list = output_to_input(selected_layer, selected_head_list[i], selected_id);
-                        var highlight_color = $('#headSelectLabel' + selected_head_list[i].toString()).css('color');
+                    // loop over each input
+                    for (j = 0; j < input_length; j++) {
+                        var weight = cross_attn[selected_layer][selected_head_list[i]][selected_id][j];
 
-                        for (j = 0; j < highlight_list.length; j++) {
-                            var weight = heatmap_data[selected_layer][selected_head_list[i]][selected_id][highlight_list[j]];
-                            $('#input' + highlight_list[j].toString()).css(
-                                {
-                                    'color': '#272822',
-                                    'background-color': highlight_color.replace('rgb', 'rgba')
-                                        .replace(')', ', ' + opacity_scale(weight).toString() + ')')
-                                }
-                            );
-                        }
+                        // generate highlight div id, e.g.: highlightHead0Output0Input0
+                        var highlightId = 'highlightHead' + selected_head_list[i].toString() + 'Output' + selected_id.toString() + 'Input' + j.toString();
+                        $('#input' + j.toString()).append("<div class='highlightBackground' id=\'" + highlightId + "\'></div>");
+                        $('#' + highlightId).css({
+                            'position': 'absolute',
+                            'width': '100%',
+                            'height': '100%',
+                            'top': '0',
+                            'left': '0',
+                            'background-color': highlight_color.replace('rgb', 'rgba')
+                                .replace(')', ', ' + opacity_scale(weight).toString() + ')')
+                        });
+                        $('#output' + selected_id.toString()).css({
+                            'font-weight': 'bold'
+                        })
                     }
                 }
             },
             function () {
+                if (typeof(selected_layer) === 'undefined') return;
+                if (selected_head_list.length === 0) return;
+
+                // remove highlight background on top of input text
+                $('.highlightBackground').remove();
+                // get current output id (0 ~ 100)
                 current_id = $(this).attr('id');
-                if (current_id.charAt(0) === 'i') {
-                    console.log("not implemented");
-                }
-                else {
-                    if (typeof(selected_layer) === 'undefined') return;
-                    if (selected_head_list.length === 0) return;
-                    for (i = 0; i < selected_head_list.length; i++) {
-                        highlight_list = output_to_input(selected_layer, selected_head_list[i], parseInt(current_id.slice(6)));
-                        for (j = 0; j < highlight_list.length; j++) {
-                            $('#input' + highlight_list[j].toString()).css(
-                                {
-                                    'color': '',
-                                    'background-color': ''
-                                    // 'opacity': ''
-                                }
-                            );
-                        }
-                    }
-                }
+                var selected_id = parseInt(current_id.slice(6));
+                $('#output' + selected_id.toString()).css({
+                    'font-weight': ''
+                })
             }
         );
 
-        heatmapdata = heatmap_data;
+        heatmapdata = cross_attn;
 
         function drawImage(imageObj) {
             var canvas = document.getElementById("heatmapCanvas");
@@ -146,35 +154,36 @@ $(document).ready(function () {
     });
 });
 
-function append_text() {
-    $.get("../static/data/input_tokenize_clean.json", function (data) {
-        input_text = data;
-        $('#highlightTextField').append("<p>Input Text: </p>");
-        for (i = 0; i < input_text.length; i++) {
-            if (input_text[i].charAt(0) === '▁') {
-                word = input_text[i].slice(1);
-            }
-            else {
-                word = input_text[i];
-            }
-            $('#highlightTextField').append("<a id = \'input" + i + "\'>" + word + " </a>");
+function append_text(input, output) {
+    $('#highlightTextFieldInput').append("<p>Input Text: </p>");
+    for (i = 0; i < input.length; i++) {
+        if (input[i].charAt(0) === '▁') {
+            word = input[i].slice(1);
         }
-        $('#highlightTextField').append('<br> <br>');
-
-        // make sure "output data" is appended after "input data"
-        $.get("../static/data/output_tokenize_clean.json", function (data) {
-            output_text = data;
-            $('#highlightTextField').append("<p>Output Text: </p>");
-            for (i = 0; i < output_text.length; i++) {
-                if (output_text[i].charAt(0) === '▁') {
-                    word = output_text[i].slice(1);
-                }
-                else {
-                    word = output_text[i];
-                }
-                $('#highlightTextField').append("<a id = \'output" + i + "\'>" + word + " </a>");
-            }
-            $('#highlightTextField').append('<br> <br>');
+        else {
+            word = input[i];
+        }
+        $('#highlightTextFieldInput').append("<div id = \'input" + i + "\' class='inputText'>" + word + "&nbsp </div>");
+        $('#input' + i.toString()).css({
+            'position': 'relative',
+            'float': 'left'
         });
-    });
-}
+    }
+    $('#highlightTextFieldInput').append('<br> <br>');
+
+    $('#highlightTextFieldOutput').append("<p>Output Text: </p>");
+    for (i = 0; i < output.length; i++) {
+        if (output[i].charAt(0) === '▁') {
+            word = output[i].slice(1);
+        }
+        else {
+            word = output[i];
+        }
+        $('#highlightTextFieldOutput').append("<div id = \'output" + i + "\' class='outputText'>" + word + "&nbsp </div>");
+        $('#output' + i.toString()).css({
+            'position': 'relative',
+            'float': 'left'
+        });
+    }
+    $('#highlightTextFieldOutput').append('<br> <br>');
+};
