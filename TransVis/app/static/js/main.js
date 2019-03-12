@@ -73,6 +73,10 @@ $(document).ready(function () {
             });
         }
 
+        // set default value for attention dropdown and layer dropdown
+        $("#attentionSelect").dropdown('set selected', '1');
+        $("#layerSelect").dropdown('set selected', '0');
+
         // bind hover action to output text
         $('.outputText').hover(
             function () {
