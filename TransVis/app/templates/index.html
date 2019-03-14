@@ -39,7 +39,7 @@
         }
 
         /*#heatmap {*/
-            /*height: 40%;*/
+        /*height: 40%;*/
         /*}*/
 
         .headSelect {
@@ -57,7 +57,8 @@
     <div class="container-fluid text-center fillHeight">
         <div class="row content fillHeight">
             <div class="col-sm-4 well fillHeight" id="panel">
-
+                <div class="default text"><strong>Select Attention</strong></div>
+                <br>
                 <div class="ui selection dropdown" id="attentionSelect">
                     <input type="hidden" name="head">
                     <i class="dropdown icon"></i>
@@ -69,7 +70,8 @@
                     </div>
                 </div>
                 <br><br>
-
+                <div class="default text"><strong>Select Layer</strong></div>
+                <br>
                 <div class="ui selection dropdown" id="layerSelect">
                     <input type="hidden" name="head">
                     <i class="dropdown icon"></i>
@@ -88,7 +90,6 @@
                     </div>
                 </div>
                 <br><br>
-
                 <div class="default text"><strong>Select Heads</strong></div>
                 <div class="ui checkbox headSelect">
                     <input type="checkbox" tabindex="0" class="hidden" id="headSelect0">
@@ -122,7 +123,17 @@
                     <input type="checkbox" tabindex="0" class="hidden" id="headSelect7">
                     <label id="headSelectLabel7">Head 8</label>
                 </div>
-
+                <br>
+                <button class="ui teal button">Go</button>
+                <br><br>
+                <div class="ui form">
+                    <div class="field">
+                        <label>Customized Input</label>
+                        <textarea></textarea>
+                    </div>
+                </div>
+                <br>
+                <button class="ui teal button">Submit</button>
             </div>
             <div class="col-sm-8 fillHeight" id="chart" style="text-align: left">
                 <div class="fillWidth well" id="highlight">
@@ -132,8 +143,8 @@
                     </div>
                 </div>
                 <!--<div class="fillWidth well" id="heatmap">-->
-                    <!--<canvas id="heatmapCanvas" class="fillWidth fillHeight" style="display: none"></canvas>-->
-                    <!--<div id="heatmapDiv" class="fillHeight fillWidth"></div>-->
+                <!--<canvas id="heatmapCanvas" class="fillWidth fillHeight" style="display: none"></canvas>-->
+                <!--<div id="heatmapDiv" class="fillHeight fillWidth"></div>-->
                 <!--</div>-->
             </div>
         </div>
