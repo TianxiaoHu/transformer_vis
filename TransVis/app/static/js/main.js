@@ -168,6 +168,12 @@ function append_text(input, output) {
         else {
             word = input[i];
         }
+        if (i && input[i-1] === '⇧'){
+            word = word.toUpperCase();
+        }
+        if (i && input[i-1] === '↑'){
+            word = word.slice(0, 1).toUpperCase() + word.slice(1);
+        }
         $('#highlightTextFieldInput').append("<div id = \'input" + i + "\' class='inputText'>" + word + "&nbsp </div>");
         $('#input' + i.toString()).css({
             'position': 'relative',
@@ -184,6 +190,12 @@ function append_text(input, output) {
         }
         else {
             word = output[i];
+        }
+        if (i && output[i-1] === '⇧'){
+            word = word.toUpperCase();
+        }
+        if (i && output[i-1] === '↑'){
+            word = word.slice(0, 1).toUpperCase() + word.slice(1);
         }
         $('#highlightTextFieldOutput').append("<div id = \'output" + i + "\' class='outputText'>" + word + "&nbsp </div>");
         $('#output' + i.toString()).css({
