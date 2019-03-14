@@ -105,7 +105,8 @@ $(document).ready(function () {
                             'top': '0',
                             'left': '0',
                             'background-color': highlight_color.replace('rgb', 'rgba')
-                                .replace(')', ', ' + opacity_scale(weight).toString() + ')')
+                                .replace(')', ', ' + opacity_scale(weight).toString() + ')'),
+                            'z-index': '-1'
                         });
                         $('#output' + selected_id.toString()).css({
                             'font-weight': 'bold'
@@ -170,7 +171,8 @@ function append_text(input, output) {
         $('#highlightTextFieldInput').append("<div id = \'input" + i + "\' class='inputText'>" + word + "&nbsp </div>");
         $('#input' + i.toString()).css({
             'position': 'relative',
-            'float': 'left'
+            'float': 'left',
+            'z-index': 10
         });
     }
     $('#highlightTextFieldInput').append('<br> <br>');
@@ -186,7 +188,8 @@ function append_text(input, output) {
         $('#highlightTextFieldOutput').append("<div id = \'output" + i + "\' class='outputText'>" + word + "&nbsp </div>");
         $('#output' + i.toString()).css({
             'position': 'relative',
-            'float': 'left'
+            'float': 'left',
+            'z-index': 10
         });
     }
     $('#highlightTextFieldOutput').append('<br> <br>');
