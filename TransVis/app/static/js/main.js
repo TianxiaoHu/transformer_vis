@@ -11,10 +11,6 @@ var opacity_scale;
 
 $(document).ready(function () {
 
-    // initialize dropdown list
-    $('.ui.dropdown')
-        .dropdown();
-
     // create color map for different heads
     var color_map = d3.scale.category10();
 
@@ -49,6 +45,10 @@ $(document).ready(function () {
         }
     });
 
+    $('#animation').on("click", function () {
+        live_show();
+    });
+
     $.get("../static/data/cross.json", function (data) {
         // load data to global variable
         input_text = data['article'];
@@ -64,7 +64,8 @@ $(document).ready(function () {
         // TODO: append layer and head dynamically according to `layer_num` and `head_num`
 
         // append input and output data HTML
-        append_text(input_text, output_text);
+        append_input(input_text);
+        append_output(output_text);
 
         // change text color for head select checkbox
         for (i = 0; i < head_num; i++) {
@@ -77,57 +78,6 @@ $(document).ready(function () {
         $("#attentionSelect").dropdown('set selected', '1');
         $("#layerSelect").dropdown('set selected', '0');
 
-        // bind hover action to output text
-        $('.outputText').hover(
-            function () {
-                if (typeof(selected_layer) === 'undefined') return;
-                if (selected_head_list.length === 0) return;
-
-                // get current output id (0 ~ 100)
-                current_id = $(this).attr('id');
-                var selected_id = parseInt(current_id.slice(6));
-
-                // loop over each head and add floating div
-                for (i = 0; i < selected_head_list.length; i++) {
-                    var highlight_color = $('#headSelectLabel' + selected_head_list[i].toString()).css('color');
-
-                    // loop over each input
-                    for (j = 0; j < input_length; j++) {
-                        var weight = cross_attn[selected_layer][selected_head_list[i]][selected_id][j];
-
-                        // generate highlight div id, e.g.: highlightHead0Output0Input0
-                        var highlightId = 'highlightHead' + selected_head_list[i].toString() + 'Output' + selected_id.toString() + 'Input' + j.toString();
-                        $('#input' + j.toString()).append("<div class='highlightBackground' id=\'" + highlightId + "\'></div>");
-                        $('#' + highlightId).css({
-                            'position': 'absolute',
-                            'width': '100%',
-                            'height': '100%',
-                            'top': '0',
-                            'left': '0',
-                            'background-color': highlight_color.replace('rgb', 'rgba')
-                                .replace(')', ', ' + opacity_scale(weight).toString() + ')'),
-                            'z-index': '-1'
-                        });
-                        $('#output' + selected_id.toString()).css({
-                            'font-weight': 'bold'
-                        })
-                    }
-                }
-            },
-            function () {
-                if (typeof(selected_layer) === 'undefined') return;
-                if (selected_head_list.length === 0) return;
-
-                // remove highlight background on top of input text
-                $('.highlightBackground').remove();
-                // get current output id (0 ~ 100)
-                current_id = $(this).attr('id');
-                var selected_id = parseInt(current_id.slice(6));
-                $('#output' + selected_id.toString()).css({
-                    'font-weight': ''
-                })
-            }
-        );
 
         // heatmapdata = cross_attn;
         //
@@ -159,7 +109,7 @@ $(document).ready(function () {
     });
 });
 
-function append_text(input, output) {
+function append_input(input) {
     $('#highlightTextFieldInput').append("<p>Input Text: </p>");
     for (i = 0; i < input.length; i++) {
         if (input[i].charAt(0) === '▁') {
@@ -168,10 +118,10 @@ function append_text(input, output) {
         else {
             word = input[i];
         }
-        if (i && input[i-1] === '⇧'){
+        if (i && input[i - 1] === '⇧') {
             word = word.toUpperCase();
         }
-        if (i && input[i-1] === '↑'){
+        if (i && input[i - 1] === '↑') {
             word = word.slice(0, 1).toUpperCase() + word.slice(1);
         }
         $('#highlightTextFieldInput').append("<div id = \'input" + i + "\' class='inputText'>" + word + "&nbsp </div>");
@@ -182,7 +132,9 @@ function append_text(input, output) {
         });
     }
     $('#highlightTextFieldInput').append('<br> <br>');
+}
 
+function append_output(output) {
     $('#highlightTextFieldOutput').append("<p>Output Text: </p>");
     for (i = 0; i < output.length; i++) {
         if (output[i].charAt(0) === '▁') {
@@ -191,10 +143,10 @@ function append_text(input, output) {
         else {
             word = output[i];
         }
-        if (i && output[i-1] === '⇧'){
+        if (i && output[i - 1] === '⇧') {
             word = word.toUpperCase();
         }
-        if (i && output[i-1] === '↑'){
+        if (i && output[i - 1] === '↑') {
             word = word.slice(0, 1).toUpperCase() + word.slice(1);
         }
         $('#highlightTextFieldOutput').append("<div id = \'output" + i + "\' class='outputText'>" + word + "&nbsp </div>");
@@ -204,5 +156,138 @@ function append_text(input, output) {
             'z-index': 10
         });
     }
-    $('#highlightTextFieldOutput').append('<br> <br>');
+
+    // bind hover action to output text
+    $('.outputText').hover(
+        function () {
+            if (typeof(selected_layer) === 'undefined') return;
+            if (selected_head_list.length === 0) return;
+
+            // get current output id (0 ~ 100)
+            current_id = $(this).attr('id');
+            var selected_id = parseInt(current_id.slice(6));
+
+            // loop over each head and add floating div
+            for (i = 0; i < selected_head_list.length; i++) {
+                var highlight_color = $('#headSelectLabel' + selected_head_list[i].toString()).css('color');
+
+                // loop over each input
+                for (j = 0; j < input_length; j++) {
+                    var weight = cross_attn[selected_layer][selected_head_list[i]][selected_id][j];
+
+                    // generate highlight div id, e.g.: highlightHead0Output0Input0
+                    var highlightId = 'highlightHead' + selected_head_list[i].toString() + 'Output' + selected_id.toString() + 'Input' + j.toString();
+                    $('#input' + j.toString()).append("<div class='highlightBackground' id=\'" + highlightId + "\'></div>");
+                    $('#' + highlightId).css({
+                        'position': 'absolute',
+                        'width': '100%',
+                        'height': '100%',
+                        'top': '0',
+                        'left': '0',
+                        'background-color': highlight_color.replace('rgb', 'rgba')
+                            .replace(')', ', ' + opacity_scale(weight).toString() + ')'),
+                        'z-index': '-1'
+                    });
+                    $('#output' + selected_id.toString()).css({
+                        'font-weight': 'bold'
+                    })
+                }
+            }
+        },
+        function () {
+            if (typeof(selected_layer) === 'undefined') return;
+            if (selected_head_list.length === 0) return;
+
+            // remove highlight background on top of input text
+            $('.highlightBackground').remove();
+            // get current output id (0 ~ 100)
+            current_id = $(this).attr('id');
+            var selected_id = parseInt(current_id.slice(6));
+            $('#output' + selected_id.toString()).css({
+                'font-weight': ''
+            })
+        }
+    );
 };
+
+function live_show() {
+    $('#highlightTextFieldOutput').empty();
+    // animation
+    $('#highlightTextFieldOutput').append("<p>Output Text: </p>");
+
+    // word index to loop over output text
+    var w_i = 0;
+    var timer = setInterval(function () {
+            // clean highlight generated in previous word
+            $('.highlightBackground').remove();
+            if (w_i) {
+                $('#output' + (w_i - 1).toString()).css({
+                    'font-weight': ''
+                })
+            }
+
+            if (w_i === output_length) {
+                // reset timer
+                clearInterval(timer);
+                // clean and re-append HTML
+                $('#highlightTextFieldOutput').empty();
+                append_output(output_text);
+            }
+            else {
+                if (output_text[w_i].charAt(0) === '▁') {
+                    word = output_text[w_i].slice(1);
+                }
+                else {
+                    word = output_text[w_i];
+                }
+                if (w_i && output_text[w_i - 1] === '⇧') {
+                    word = word.toUpperCase();
+                }
+                if (w_i && output_text[w_i - 1] === '↑') {
+                    word = word.slice(0, 1).toUpperCase() + word.slice(1);
+                }
+                // append word in the chart
+                $('#highlightTextFieldOutput').append("<div id = \'output" + w_i + "\' class='outputText'>" + word + "&nbsp </div>");
+                $('#output' + w_i.toString()).css({
+                    'position': 'relative',
+                    'float': 'left',
+                    'z-index': 10
+                });
+                if (typeof(selected_layer) === 'undefined') {
+                    w_i++;
+                    return;
+                }
+
+                // get current output id (0 ~ 100)
+                var selected_id = w_i;
+                for (i = 0; i < selected_head_list.length; i++) {
+                    var highlight_color = $('#headSelectLabel' + selected_head_list[i].toString()).css('color');
+
+                    // loop over each input
+                    for (j = 0; j < input_length; j++) {
+                        var weight = cross_attn[selected_layer][selected_head_list[i]][selected_id][j];
+
+                        // generate highlight div id, e.g.: highlightHead0Output0Input0
+                        var highlightId = 'highlightHead' + selected_head_list[i].toString() + 'Output' + selected_id.toString() + 'Input' + j.toString();
+                        $('#input' + j.toString()).append("<div class='highlightBackground' id=\'" + highlightId + "\'></div>");
+                        $('#' + highlightId).css({
+                            'position': 'absolute',
+                            'width': '100%',
+                            'height': '100%',
+                            'top': '0',
+                            'left': '0',
+                            'background-color': highlight_color.replace('rgb', 'rgba')
+                                .replace(')', ', ' + opacity_scale(weight).toString() + ')'),
+                            'z-index': '-1'
+                        });
+                        $('#output' + selected_id.toString()).css({
+                            'font-weight': 'bold'
+                        })
+                    }
+                }
+                w_i++;
+            }
+            // new word appears every 30 milliseconds
+        }, 30
+    );
+}
