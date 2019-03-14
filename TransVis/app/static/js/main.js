@@ -129,33 +129,33 @@ $(document).ready(function () {
             }
         );
 
-        heatmapdata = cross_attn;
-
-        function drawImage(imageObj) {
-            var canvas = document.getElementById("heatmapCanvas");
-            var context = canvas.getContext("2d");
-            var imageX = 0;
-            var imageY = 0;
-
-            context.drawImage(imageObj, imageX, imageY);
-
-            var x_labels = input_text;
-            var y_labels = output_text;
-            var data = [{
-                z: heatmapdata[0][0],
-                x: input_text,
-                y: output_text,
-                type: "heatmap",
-                colorscale: "Portland"
-            }];
-            Plotly.newPlot("heatmapDiv", data, {}, {showSendToCloud: true});
-        }
-
-        var imageObj = new Image();
-        imageObj.onload = function () {
-            drawImage(this);
-        };
-        imageObj.src = "https://images.plot.ly/plotly-documentation/images/heatmap-galaxy.jpg";
+        // heatmapdata = cross_attn;
+        //
+        // function drawImage(imageObj) {
+        //     var canvas = document.getElementById("heatmapCanvas");
+        //     var context = canvas.getContext("2d");
+        //     var imageX = 0;
+        //     var imageY = 0;
+        //
+        //     context.drawImage(imageObj, imageX, imageY);
+        //
+        //     var x_labels = input_text;
+        //     var y_labels = output_text;
+        //     var data = [{
+        //         z: heatmapdata[0][0],
+        //         x: input_text,
+        //         y: output_text,
+        //         type: "heatmap",
+        //         colorscale: "Portland"
+        //     }];
+        //     Plotly.newPlot("heatmapDiv", data, {}, {showSendToCloud: true});
+        // }
+        //
+        // var imageObj = new Image();
+        // imageObj.onload = function () {
+        //     drawImage(this);
+        // };
+        // imageObj.src = "https://images.plot.ly/plotly-documentation/images/heatmap-galaxy.jpg";
     });
 });
 
