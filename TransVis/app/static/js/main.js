@@ -7,7 +7,7 @@ var layer_num;
 var head_num;
 var input_length;
 var output_length;
-var opacity_scale;
+// var opacity_scale;
 
 $(document).ready(function () {
 
@@ -26,9 +26,9 @@ $(document).ready(function () {
             });
 
             // linear scaler for opacity
-            opacity_scale = d3.scale.linear()
-                .domain([0, max_value])
-                .range([0, 0.8]);
+            // opacity_scale = d3.scale.linear()
+            //     .domain([0, max_value])
+            //     .range([0, 0.8]);
         }
     });
 
@@ -109,6 +109,15 @@ $(document).ready(function () {
     });
 });
 
+function opacity_log_scale(weight) {
+// transform weight -> [0, 1] to opacity ->[0, 1] in log scale
+// opacity = max(1/2 * (log10(weight) + 2), 0)
+    if (weight < 0.01) return 0;
+    else {
+        return (Math.log10(weight) + 2) / 2;
+    }
+}
+
 function append_input(input) {
     $('#highlightTextFieldInput').append("<p>Input Text: </p>");
     for (i = 0; i < input.length; i++) {
@@ -185,7 +194,7 @@ function append_output(output) {
                         'top': '0',
                         'left': '0',
                         'background-color': highlight_color.replace('rgb', 'rgba')
-                            .replace(')', ', ' + opacity_scale(weight).toString() + ')'),
+                            .replace(')', ', ' + opacity_log_scale(weight).toString() + ')'),
                         'z-index': '-1'
                     });
                     $('#output' + selected_id.toString()).css({
@@ -277,7 +286,7 @@ function live_show() {
                             'top': '0',
                             'left': '0',
                             'background-color': highlight_color.replace('rgb', 'rgba')
-                                .replace(')', ', ' + opacity_scale(weight).toString() + ')'),
+                                .replace(')', ', ' + opacity_log_scale(weight).toString() + ')'),
                             'z-index': '-1'
                         });
                         $('#output' + selected_id.toString()).css({
