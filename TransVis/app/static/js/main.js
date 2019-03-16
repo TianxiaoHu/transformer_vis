@@ -141,6 +141,58 @@ function append_input(input) {
         });
     }
     $('#highlightTextFieldInput').append('<br> <br>');
+
+    // bind hover action to input text
+    $('.inputText').hover(
+        function () {
+            if (typeof(selected_layer) === 'undefined') return;
+            if (selected_head_list.length === 0) return;
+
+            // get current input id (0 ~ 400)
+            current_id = $(this).attr('id');
+            var selected_id = parseInt(current_id.slice(5));
+
+            // loop over each head and add floating div
+            for (i = 0; i < selected_head_list.length; i++) {
+                var highlight_color = $('#headSelectLabel' + selected_head_list[i].toString()).css('color');
+
+                // loop over each output
+                for (j = 0; j < output_length; j++) {
+                    var weight = cross_attn[selected_layer][selected_head_list[i]][j][selected_id];
+
+                    // generate highlight div id, e.g.: highlightHead0Input0Output0
+                    var highlight_id = 'highlightHead' + selected_head_list[i].toString() + 'Input' + selected_id.toString() + 'Output' + j.toString();
+                    $('#output' + j.toString()).append("<div class='highlightBackground' id=\'" + highlight_id + "\'></div>");
+                    $('#' + highlight_id).css({
+                        'position': 'absolute',
+                        'width': '100%',
+                        'height': '100%',
+                        'top': '0',
+                        'left': '0',
+                        'background-color': highlight_color.replace('rgb', 'rgba')
+                            .replace(')', ', ' + opacity_log_scale(weight).toString() + ')'),
+                        'z-index': '-1'
+                    });
+                    $('#input' + selected_id.toString()).css({
+                        'font-weight': 'bold'
+                    })
+                }
+            }
+        },
+        function () {
+            if (typeof(selected_layer) === 'undefined') return;
+            if (selected_head_list.length === 0) return;
+
+            // remove highlight background on top of output text
+            $('.highlightBackground').remove();
+            // get current input id (0 ~ 400)
+            current_id = $(this).attr('id');
+            var selected_id = parseInt(current_id.slice(5));
+            $('#input' + selected_id.toString()).css({
+                'font-weight': ''
+            })
+        }
+    );
 }
 
 function append_output(output) {
@@ -185,9 +237,9 @@ function append_output(output) {
                     var weight = cross_attn[selected_layer][selected_head_list[i]][selected_id][j];
 
                     // generate highlight div id, e.g.: highlightHead0Output0Input0
-                    var highlightId = 'highlightHead' + selected_head_list[i].toString() + 'Output' + selected_id.toString() + 'Input' + j.toString();
-                    $('#input' + j.toString()).append("<div class='highlightBackground' id=\'" + highlightId + "\'></div>");
-                    $('#' + highlightId).css({
+                    var highlight_id = 'highlightHead' + selected_head_list[i].toString() + 'Output' + selected_id.toString() + 'Input' + j.toString();
+                    $('#input' + j.toString()).append("<div class='highlightBackground' id=\'" + highlight_id + "\'></div>");
+                    $('#' + highlight_id).css({
                         'position': 'absolute',
                         'width': '100%',
                         'height': '100%',
@@ -277,9 +329,9 @@ function live_show() {
                         var weight = cross_attn[selected_layer][selected_head_list[i]][selected_id][j];
 
                         // generate highlight div id, e.g.: highlightHead0Output0Input0
-                        var highlightId = 'highlightHead' + selected_head_list[i].toString() + 'Output' + selected_id.toString() + 'Input' + j.toString();
-                        $('#input' + j.toString()).append("<div class='highlightBackground' id=\'" + highlightId + "\'></div>");
-                        $('#' + highlightId).css({
+                        var highlight_id = 'highlightHead' + selected_head_list[i].toString() + 'Output' + selected_id.toString() + 'Input' + j.toString();
+                        $('#input' + j.toString()).append("<div class='highlightBackground' id=\'" + highlight_id + "\'></div>");
+                        $('#' + highlight_id).css({
                             'position': 'absolute',
                             'width': '100%',
                             'height': '100%',
