@@ -7,6 +7,7 @@ var layer_num;
 var head_num;
 var input_length;
 var output_length;
+var timer;
 // var opacity_scale;
 
 $(document).ready(function () {
@@ -47,6 +48,15 @@ $(document).ready(function () {
 
     $('#animation').on("click", function () {
         live_show();
+    });
+
+    $('#stopAnimation').on("click", function () {
+        clearInterval(timer);
+        $('.highlightBackground').remove();
+        $('#highlightTextFieldOutput').empty();
+        append_output(output_text);
+        $('#animation').removeClass('disabled');
+        $('#stopAnimation').addClass('disabled');
     });
 
     $.get("../static/data/cross.json", function (data) {
@@ -272,13 +282,15 @@ function append_output(output) {
 };
 
 function live_show() {
+    $('#animation').addClass('disabled');
+    $('#stopAnimation').removeClass('disabled');
     $('#highlightTextFieldOutput').empty();
     // animation
     $('#highlightTextFieldOutput').append("<p>Output Text: </p>");
 
     // word index to loop over output text
     var w_i = 0;
-    var timer = setInterval(function () {
+    timer = setInterval(function () {
             // clean highlight generated in previous word
             $('.highlightBackground').remove();
             if (w_i) {
@@ -293,6 +305,8 @@ function live_show() {
                 // clean and re-append HTML
                 $('#highlightTextFieldOutput').empty();
                 append_output(output_text);
+                $('#animation').removeClass('disabled');
+                $('#stopAnimation').addClass('disabled');
             }
             else {
                 if (output_text[w_i].charAt(0) === '▁') {
@@ -349,6 +363,6 @@ function live_show() {
                 w_i++;
             }
             // new word appears every 30 milliseconds
-        }, 30
+        }, 50
     );
 }
