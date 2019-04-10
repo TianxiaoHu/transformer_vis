@@ -59,7 +59,7 @@ $(document).ready(function () {
         $('#stopAnimation').addClass('disabled');
     });
 
-    $.get("../static/data/cross.json", function (data) {
+    $.get("../static/data/cross_0.json", function (data) {
         // load data to global variable
         input_text = data['article'];
         output_text = data['summary'];
@@ -363,6 +363,6 @@ function live_show() {
                 w_i++;
             }
             // new word appears every 30 milliseconds
-        }, 50
+        }, 300
     );
 }
