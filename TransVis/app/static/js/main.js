@@ -11,6 +11,8 @@ var timer;
 // var opacity_scale;
 
 $(document).ready(function () {
+    $('.ui.dropdown')
+        .dropdown();
 
     // create color map for different heads
     var color_map = d3.scale.category10();
@@ -85,37 +87,8 @@ $(document).ready(function () {
         }
 
         // set default value for attention dropdown and layer dropdown
-        $("#attentionSelect").dropdown('set selected', '1');
+        $("#attentionSelect").dropdown('set selected', '0');
         $("#layerSelect").dropdown('set selected', '0');
-
-
-        // heatmapdata = cross_attn;
-        //
-        // function drawImage(imageObj) {
-        //     var canvas = document.getElementById("heatmapCanvas");
-        //     var context = canvas.getContext("2d");
-        //     var imageX = 0;
-        //     var imageY = 0;
-        //
-        //     context.drawImage(imageObj, imageX, imageY);
-        //
-        //     var x_labels = input_text;
-        //     var y_labels = output_text;
-        //     var data = [{
-        //         z: heatmapdata[0][0],
-        //         x: input_text,
-        //         y: output_text,
-        //         type: "heatmap",
-        //         colorscale: "Portland"
-        //     }];
-        //     Plotly.newPlot("heatmapDiv", data, {}, {showSendToCloud: true});
-        // }
-        //
-        // var imageObj = new Image();
-        // imageObj.onload = function () {
-        //     drawImage(this);
-        // };
-        // imageObj.src = "https://images.plot.ly/plotly-documentation/images/heatmap-galaxy.jpg";
     });
 });
 
@@ -362,7 +335,7 @@ function live_show() {
                 }
                 w_i++;
             }
-            // new word appears every 30 milliseconds
+            // new word appears every 300 milliseconds
         }, 300
     );
 }
