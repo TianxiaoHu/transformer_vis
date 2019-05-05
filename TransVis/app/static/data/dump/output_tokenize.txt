@@ -1,1 +1,0 @@
-['▁Under', '-', 'age', '▁dec', 'oy', '▁buyers', '▁were', '▁able', '▁to', '▁purchase', '▁alcohol', '▁at', '▁more', '▁than', '▁half', '▁of', '▁the', '▁hundreds', '▁of', '▁pharmacies', ',', '▁grocery', '▁stores', '▁and', '▁liquor', '▁stores', '▁in', '▁New', '▁York', '▁City', '.']
