@@ -93,8 +93,8 @@ $(document).ready(function () {
 });
 
 function opacity_log_scale(weight) {
-// transform weight -> [0, 1] to opacity ->[0, 1] in log scale
-// opacity = max(1/2 * (log10(weight) + 2), 0)
+    // transform weight -> [0, 1] to opacity ->[0, 1] in log scale
+    // opacity = max(1/2 * (log10(weight) + 2), 0)
     if (weight < 0.01) return 0;
     else {
         return (Math.log10(weight) + 2) / 2;
