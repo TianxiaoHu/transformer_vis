@@ -46,3 +46,6 @@ Then open your browser and enter: `localhost: 5000` to visit the website.
 - paper: [Attention Is All You Need](https://arxiv.org/pdf/1706.03762)
 - [Harvard nlp group blog](http://nlp.seas.harvard.edu/2018/04/03/attention.html)
 - [The illustrated Transformer](http://jalammar.github.io/illustrated-transformer/) by Jay Alammar
+
+## Jupyter Notebooks
+Included are notebooks to load the Transformer models and generate summaries, as well as the notebook that calculates saliency. More detailed instructions on how to run them are included in the jupyter notebooks. Dependencies include TF 1.9 and other libraries included on the server. 
